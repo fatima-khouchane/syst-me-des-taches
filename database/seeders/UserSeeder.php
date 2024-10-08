@@ -26,11 +26,13 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password')
         ]);
 
-        $users = User::create([
+        $user = User::create([
             'name' => 'user',
             'email' => 'user@gmail.com',
             'password' => Hash::make('password')
         ]);
-        $admin->roles()->attach([]);
+        $admin->roles()->attach([1, 2]);
+        $create->roles()->attach([2]);
+        $user->roles()->attach([3]);
     }
 }
