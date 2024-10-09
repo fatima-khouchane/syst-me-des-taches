@@ -3,6 +3,9 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -21,6 +24,16 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Gate::define('admin', function (User $user) {
+            // Seuls les administrateurs peuvent mettre à jour les rôles
+            return $user->isAdmin();
+        });
+
+
+        Gate::define('canCreateTask', function (User $user) {
+            // Seuls les administrateurs peuvent mettre à jour les rôles
+            return $user->ManyRoles(['admin', 'create']);
+        });
     }
+
 }

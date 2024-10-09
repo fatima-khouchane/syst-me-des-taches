@@ -36,15 +36,5 @@ class UserController extends Controller
     }
 
 
-    public function update(User $user, Request $request)
-    {
-        $request->validate(
-            [
-                'roles' => ['array', 'exists:roles,id']
-            ]
-        );
-        // dd($request->input('roles'));
-        $user->roles()->sync($request->input('roles'));
-        return redirect()->route('gestionUser');
-    }
+  
 }
