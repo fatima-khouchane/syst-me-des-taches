@@ -11,12 +11,17 @@
                         <li class="md:mr-5 py-2 md:py-0"><a href="{{ route('task.index') }}" class="hover:text-gray-400">Mes taches creer</a></li>
 
             @endcan
+
             @can('admin')
                         <li class="md:mr-5 py-2 md:py-0"><a href="{{ route('gestionUser') }}" class="hover:text-gray-400">Gestion des users</a></li>
 
             @endcan
-            <li class="md:mr-5 py-2 md:py-0"><a href="#" class="hover:text-gray-400">Nouvelle tâche</a></li>
-       </ul>
+          @can('canCreateTask')
+
+            <li class="md:mr-5 py-2 md:py-0"><a href="{{ route('task.create') }}" class="hover:text-gray-400">Nouvelle tâche</a></li>
+            @endcan
+
+        </ul>
 </div>
 
 @endsection

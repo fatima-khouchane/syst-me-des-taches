@@ -37,8 +37,8 @@
                 </td>
                 <td class="px-6 py-4">
                     <a href="#" class="font-medium bg-green-500 px-2 py2 text-white rounded-md hover:underline">Attribuer</a>
-                    <a href="#" class="font-medium bg-red-500 px-2 py2 text-white rounded-md  hover:underline">Remove</a>
-                    <a href="#" class="font-medium bg-blue-500 px-2 py2 text-white rounded-md hover:underline">Edit</a>
+                    <a href="{{ route('task.remove',['task' => $task->id]) }}" class="font-medium bg-red-500 px-2 py2 text-white rounded-md  hover:underline">Remove</a>
+                    <a href="{{ route('task.edit',['task' => $task->id]) }}" class="font-medium bg-blue-500 px-2 py2 text-white rounded-md hover:underline">Edit</a>
                 </td>
             </tr>
            @endforeach

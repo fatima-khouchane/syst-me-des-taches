@@ -45,7 +45,11 @@ Route::prefix('task')
     ->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/assigned', 'MysTask')->name('MysTask');
-
+        Route::get('/create', 'create')->name('create');
+        Route::post('/create', 'store')->name('store');
+        Route::get('/edit/{task}', 'edit')->name('edit');
+        Route::post('/edit/{task}', 'update')->name('update');
+        Route::get('/remove/{task}', 'remove')->name('remove');
 
 
 
