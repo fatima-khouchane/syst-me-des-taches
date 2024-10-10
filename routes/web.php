@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\admin\UserController;
+use App\Http\Controllers\TaskController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -24,15 +26,33 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::prefix('admin')->controller(UserController::class)->group(function () {
-    Route::get('/gestionUser', 'index')->name('gestionUser');
-    Route::delete('/delete/{id}', 'destroy')->name('delete');
-    Route::get('/edit/{user}', 'edit')->name('edit');
-    Route::post('/update/{user}', 'update')->name('update');
+Route::prefix('admin')
+    ->controller(UserController::class)
+    ->middleware('can:admin')
+    ->group(function () {
+        Route::get('/gestionUser', 'index')->name('gestionUser');
+        Route::delete('/delete/{id}', 'destroy')->name('delete');
+        Route::get('/edit/{user}', 'edit')->name('edit');
+        Route::post('/update/{user}', 'update')->name('update');
 
 
 
-})->middleware('');
+    });
+
+Route::prefix('task')
+    ->controller(TaskController::class)
+    ->name('task.')
+    ->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/assigned', 'MysTask')->name('MysTask');
+
+
+
+
+
+    });
+
+
 
 
 Route::middleware('auth')->group(function () {

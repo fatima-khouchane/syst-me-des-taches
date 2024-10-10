@@ -60,4 +60,44 @@ class User extends Authenticatable
     {
         return $this->roles()->whereIn('name', $roles)->exists();
     }
+
+
+
+    public function Tasks()
+    {
+        return $this->hasMany(Task::class, 'user_created_by')
+        ;
+    }
+
+
+    public function createTask()
+    {
+        return $this->hasMany(Task::class, 'user_created_by');
+    }
+
+    public function assignedTask()
+    {
+
+        return $this->hasMany(Task::class, 'user_assigned_to');
+
+
+    }
+
+
+    public function created_task()
+    {
+        return $this->hasMany(Task::class, 'user_created_by')
+        ;
+    }
+
+
+    public function assigned()
+    {
+        return $this->hasMany(Task::class, 'user_assigned_to')
+        ;
+    }
+
+
+
 }
+
