@@ -44,10 +44,15 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // utilisateur peut avoir plusieurs rôles
+
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_user');
     }
+
+
+    // vérifie si l'utilisateur a un rôle d'administrateur.
 
     public function isAdmin()
     {
@@ -55,47 +60,25 @@ class User extends Authenticatable
         return $this->roles()->where('name', '=', 'admin')->exists();
     }
 
-
+    // Vérifier si l'utilisateur a plusieurs rôles
     public function ManyRoles(array $roles)
     {
         return $this->roles()->whereIn('name', $roles)->exists();
     }
 
-
-
-    public function Tasks()
-    {
-        return $this->hasMany(Task::class, 'user_created_by')
-        ;
-    }
-
-
-    public function createTask()
-    {
-        return $this->hasMany(Task::class, 'user_created_by');
-    }
-
-    public function assignedTask()
-    {
-
-        return $this->hasMany(Task::class, 'user_assigned_to');
-
-
-    }
-
-
+    // utilisateur peut créer plusieurs tâches.
     public function created_task()
     {
         return $this->hasMany(Task::class, 'user_created_by')
         ;
     }
 
-
+    // utilisateur peut se voir assigner plusieurs tâches.
     public function assigned()
     {
-        return $this->hasMany(Task::class, 'user_assigned_to')
-        ;
+        return $this->hasMany(Task::class, 'user_assigned_to');
     }
+
 
 
 

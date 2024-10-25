@@ -43,6 +43,8 @@ Route::prefix('task')
     ->controller(TaskController::class)
     ->name('task.')
     ->group(function () {
+        Route::get('/task/{task}', 'show')->name('show');
+
         Route::get('/', 'index')->name('index');
         Route::get('/assigned', 'MysTask')->name('MysTask');
         Route::get('/create', 'create')->name('create');
@@ -51,6 +53,8 @@ Route::prefix('task')
         Route::post('/edit/{task}', 'update')->name('update');
         Route::get('/remove/{task}', 'remove')->name('remove');
 
+        Route::get('/assign/{task}', 'assignedView')->name('assignedView');
+        Route::post('/assign/{task}', 'assigne')->name('assign');
 
 
 

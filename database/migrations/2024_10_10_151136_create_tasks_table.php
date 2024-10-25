@@ -16,16 +16,16 @@ return new class extends Migration {
             $table->longText('description');
             $table->date('start_date');
             $table->date('due_date');
-            $table->string('status')->default('new');
+            $table->enum('status', ['en cours', 'new', 'completed'])->default('new');
             $table->foreignId('user_created_by')->constrained('users')->cascadeOnDelete();
             $table->foreignId('user_assigned_to')
                 ->nullable()
-                ->constrained('users')->cascadeOnDelete();
-            ;
-
+                ->constrained('users')
+                ->cascadeOnDelete();
             $table->timestamps();
         });
     }
+
 
     /**
      * Reverse the migrations.
