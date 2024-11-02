@@ -103,24 +103,27 @@ class TaskController extends Controller
         $occuped = $user->assigned()
             ->where(function (Builder $query) use ($task) {
 
-                // on veut vérifier si l'utilisateur est déjà occupé avec une autre tâche "en cours"
-                // vérifier si l'utilisateur que tu veux assigner à une nouvelle tâche n'a pas déjà une tâche en cours pendant les mêmes dates.
-                // la nouvelle tâche commence avant que la tâche existante ne soit terminée.
-                $query->where('status', 'en cours')
-                    // Vérifie si les dates se chevauchent
+                // On vérifie si l'utilisateur est déjà occupé avec une autre tâche "en cours" ou "en attente"
+                // et si les dates de la nouvelle tâche chevauchent celles des tâches existantes.
+                $query->where(function ($sub) {
+                    $sub->where('status', 'en cours')
+                        ->orWhere('status', 'en attente');
+                })
                     ->where('start_date', '<=', $task->due_date)
                     ->where('due_date', '>=', $task->start_date);
+
             })->exists();
+
 
         // return true ==>utilisateur est occupé
         // dd($occuped);
         if ($occuped) {
-            return redirect()->route('task.assignedView', ['task' => $task->id])->with('error', "l'utilisateur $user->name est occupé");
+            return redirect()->route('task.assignedView', ['task' => $task->id])->with('error', "l'utilisateur $user->name est occupé poue cette période");
 
         }
 
         $task->user_assigned_to = $user_assigned_to;
-        $task->status = 'en cours';
+        $task->status = 'en attente';
         $task->save();
         return redirect()->route('task.index')->with('success', "la taches a été bien attribue a $user->name");
 
@@ -134,4 +137,20 @@ class TaskController extends Controller
     }
 
 
+
+    public function maskAsTermined(Task $task)
+    {
+        $task->status = 'terminer';
+        $task->save();
+        return redirect()->route(route: 'task.MysTask');
+
+    }
+
+    public function startTask(Task $task)
+    {
+        $task->status = 'en cours';
+        $task->save();
+        return redirect()->route('task.MysTask');
+
+    }
 }

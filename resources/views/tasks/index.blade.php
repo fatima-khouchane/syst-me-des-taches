@@ -49,7 +49,7 @@
 {{ $task->description }}
                 </th>
                 <td class="px-6 py-4">
-                    <a href="#" class="font-medium bg-blue-500 px-2 py2 text-white rounded-md hover:underline">{{ $task->status }}</a>
+                    <a href="#" class="font-medium {{ $task->statusColor() }} px-2 py2 text-white rounded-md hover:underline">{{ $task->status }}</a>
                 </td>
                 <td class="px-6 py-4">
                     @if($task->status !='en cours')

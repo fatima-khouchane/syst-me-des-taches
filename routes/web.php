@@ -56,6 +56,9 @@ Route::prefix('task')
         Route::get('/assign/{task}', 'assignedView')->name('assignedView');
         Route::post('/assign/{task}', 'assigne')->name('assign');
 
+        Route::post('/startTask/{task}', 'startTask')->name('startTask');
+        Route::post('/maskAsTermined/{task}', 'maskAsTermined')->name('maskAsTermined');
+
 
 
     });
