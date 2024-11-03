@@ -6,6 +6,8 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests\taskRequest;
+use App\Notifications\TaskAssignedNotification;
+use App\Notifications\TaskTerminedNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -125,6 +127,7 @@ class TaskController extends Controller
         $task->user_assigned_to = $user_assigned_to;
         $task->status = 'en attente';
         $task->save();
+        $user->notify(new TaskAssignedNotification($task));
         return redirect()->route('task.index')->with('success', "la taches a été bien attribue a $user->name");
 
 
@@ -133,6 +136,14 @@ class TaskController extends Controller
 
     public function show(Task $task)
     {
+        $user = User::find(Auth::user()->id);
+        $notification = $user->notifications()->where(function ($query) use ($task) {
+            $query->where('data->task_id', $task->id)
+                ->where('read_at', null);
+        })->first();
+        if ($notification) {
+            $notification->markAsRead();
+        }
         return view('tasks.show', compact('task'));
     }
 
@@ -140,8 +151,11 @@ class TaskController extends Controller
 
     public function maskAsTermined(Task $task)
     {
+        $user = User::find($task->user_created_by);
         $task->status = 'terminer';
         $task->save();
+        $user->notify(new TaskTerminedNotification($task));
+
         return redirect()->route(route: 'task.MysTask');
 
     }
@@ -153,4 +167,7 @@ class TaskController extends Controller
         return redirect()->route('task.MysTask');
 
     }
+
+
+
 }

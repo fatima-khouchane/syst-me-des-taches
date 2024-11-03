@@ -2,12 +2,12 @@
 
 @section('content')
 
-<h1 class="text-3xl text-black-500 mb-3 mt-10">Titre de la taches</h1>
+<h1 class="text-3xl text-black-500 mb-3 mt-10">{{ $task->name }}</h1>
 <div>
-    <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Labore dignissimos, esse assumenda modi inventore repellendus omnis vero provident at explicabo, quisquam alias eos laboriosam sequi ipsam praesentium repellat. Ullam, est?
-    </p>
+     {{-- <h1 class="text-xl font-bold text-black-800"> </h1> --}}
+    <p class="text-md text-gray-800"> {{ $task->description }}</p>
 
+<span class="{{ $task->statusColor() }} text-white py-2 px-4 rounded">La tache est  {{ $task->status }}</span>
     <div class="mt-3">
         <span class="text-gray-500">Publier par
         @if (Auth::user()->id == $task->user_created_by)
@@ -23,4 +23,3 @@
 
 </div>
 @endsection
-    

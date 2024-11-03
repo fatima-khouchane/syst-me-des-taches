@@ -6,8 +6,10 @@
         <li class="pr-5">
             <div class="relative id="dropdownNotificationButton" data-dropdown-toggle="dropdownNotification">
                 <div class="absolute left-0 top-0  bg-red-500 rounded-full">
-                    <span class="text-sm text-white p-1">12</span>
-                </div>
+@if (Auth::User()->unreadNotifications()->count() > 0)
+                    <span class="text-sm text-white p-1">{{ Auth::User()->unreadNotifications()->count()  }}</span>
+
+@endif                </div>
                 <div class="p-2">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="text-gray-600 w-6 h-6"
                         viewBox="0 0 16 16">
@@ -24,18 +26,21 @@
                     class="block px-4 py-2 font-medium text-center text-gray-700 rounded-t-lg bg-gray-50 dark:bg-gray-800 dark:text-white">
                     Notifications
                 </div>
-                <div class="divide-y divide-gray-100 dark:divide-gray-700 overflow-y-scroll">
+                <div class="divide-y divide-gray-100 dark:divide-gray-700 ">
 
-                    <a href="#" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
+                    @foreach (Auth::User()->unreadNotifications as $notification )
+                        <a href="{{ route('task.show',['task'=> $notification->data['task_id'] ]) }}" class="flex px-4 py-3 hover:bg-gray-100 dark:hover:bg-gray-700">
 
                         <div class="w-full pl-3">
-                            <div class="text-gray-500 text-sm mb-1.5 dark:text-gray-400"><span
-                                    class="font-semibold text-gray-900 dark:text-white">Leslie Livingston</span>
-                                mentioned you in a comment: <span class="font-medium text-blue-500"
-                                    href="#">@bonnie.green</span> what do you say?</div>
-                            <div class="text-xs text-blue-600 dark:text-blue-500">1 hour ago</div>
+                            <span
+                                    class="font-semibold inline-block text-gray-900 dark:text-white">{{ $notification->data['name'] }}</span>
+                                     <span
+                                    class="font-semibold inline-block text-gray-900 dark:text-white">{{ $notification->data['message'] }}</span>
+
+                            <div class="text-xs text-blue-600 dark:text-blue-500">{{ $notification->created_at->diffForHumans() }}</div>
                         </div>
                     </a>
+                    @endforeach
                 </div>
                 <a href="#"
                     class="block py-2 text-sm font-medium text-center text-gray-900 rounded-b-lg bg-gray-50 hover:bg-gray-100 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white">
